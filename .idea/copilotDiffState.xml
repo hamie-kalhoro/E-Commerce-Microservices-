@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/services/order/src/main/java/com/hamidi/ecommerce/orderline/OrderLineMapper.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/services/order/src/main/java/com/hamidi/ecommerce/orderline/OrderLineMapper.java" />
+              <option name="originalContent" value="package com.hamidi.ecommerce.orderline;&#10;&#10;import com.hamidi.ecommerce.order.Order;&#10;import org.springframework.stereotype.Service;&#10;&#10;@Service&#10;public class OrderLineMapper {&#10;    public OrderLine toOrderLine(OrderLineRequest request) {&#10;        return OrderLine.builder()&#10;                .id(request.orderId())&#10;                .productId(request.productId())&#10;                .order(&#10;                        Order.builder()&#10;                                .id(request.orderId())&#10;                                .build()&#10;                )&#10;                .quantity(request.quantity())&#10;                .build();&#10;    }&#10;&#10;    public OrderLineResponse toOrderLineResponse(OrderLine orderLine) {&#10;        return new OrderLineResponse(&#10;                orderLine.getId(),&#10;                orderLine.getQuantity()&#10;        );&#10;    }&#10;}&#10;" />
+              <option name="updatedContent" value="package com.hamidi.ecommerce.orderline;&#10;&#10;import com.hamidi.ecommerce.order.Order;&#10;import org.springframework.stereotype.Service;&#10;&#10;@Service&#10;public class OrderLineMapper {&#10;    public OrderLine toOrderLine(OrderLineRequest request) {&#10;        return OrderLine.builder()&#10;                .id(request.id())&#10;                .productId(request.productId())&#10;                .order(&#10;                        Order.builder()&#10;                                .id(request.orderId())&#10;                                .build()&#10;                )&#10;                .quantity(request.quantity())&#10;                .build();&#10;    }&#10;&#10;    public OrderLineResponse toOrderLineResponse(OrderLine orderLine) {&#10;        return new OrderLineResponse(&#10;                orderLine.getId(),&#10;                orderLine.getQuantity()&#10;        );&#10;    }&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/services/order/src/main/java/com/hamidi/ecommerce/orderline/OrderLineResponse.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/services/order/src/main/java/com/hamidi/ecommerce/orderline/OrderLineResponse.java" />
+              <option name="originalContent" value="package com.hamidi.ecommerce.orderline;&#10;&#10;public record OrderLineResponse() {&#10;}&#10;" />
+              <option name="updatedContent" value="package com.hamidi.ecommerce.orderline;&#10;&#10;public record OrderLineResponse(&#10;&#9;&#9;Integer id,&#10;&#9;&#9;double quantity&#10;) {&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
