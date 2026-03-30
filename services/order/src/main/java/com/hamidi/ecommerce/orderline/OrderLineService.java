@@ -1,10 +1,9 @@
-package com.hamidi.ecommerce.order;
+package com.hamidi.ecommerce.orderline;
 
-import com.hamidi.ecommerce.orderline.OrderLineMapper;
-import com.hamidi.ecommerce.orderline.OrderLineRepository;
-import com.hamidi.ecommerce.orderline.OrderLineRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,5 +15,12 @@ public class OrderLineService {
     public Integer saveOrderLine(OrderLineRequest request) {
         var order = mapper.toOrderLine(request);
         return repository.save(order).getId();
+    }
+
+    public List<OrderLineResponse> findByOrderId(Integer orderId) {
+        return repository.findAllByOrderId(orderId)
+                .stream()
+                .map(mapper::toOrderLineResponse)
+                .toList();
     }
 }

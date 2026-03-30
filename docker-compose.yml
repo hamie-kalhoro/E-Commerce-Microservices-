@@ -3,11 +3,11 @@ services:
     container_name: ms_pg_sql
     image: postgres
     environment:
-        POSTGRES_USER: Hamid
-        POSTGRES_PASSWORD: Hamid
-        PGDATA: /var/lib/postgresql/data
+      POSTGRES_USER: Hamid
+      POSTGRES_PASSWORD: Hamid
+      PGDATA: /var/lib/postgresql/data
     volumes:
-        - postgres:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
@@ -18,11 +18,11 @@ services:
     container_name: ms_pgadmin
     image: dpage/pgadmin4
     environment:
-        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@pgadmin.org}
-        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-        PGADMIN_DEFAULT_SERVER_MODE: "False"
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_DEFAULT_SERVER_MODE: "False"
     volumes:
-        - pgadmin:/var/lib/pgadmin
+      - pgadmin:/var/lib/pgadmin
     ports:
       - "5050:80"
     networks:
@@ -33,9 +33,9 @@ services:
     container_name: ms_mongo_db
     image: mongo
     ports:
-        - "27017:27017"
+      - "27017:27017"
     volumes:
-        - mongo:/data
+      - mongo:/data
     environment:
       - MONGO_INITDB_ROOT_USERNAME=Hamid
       - MONGO_INITDB_ROOT_PASSWORD=Hamid
@@ -45,7 +45,7 @@ services:
     image: mongo-express
     restart: always
     ports:
-        - "8081:8081"
+      - "8081:8081"
     environment:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=Hamid
       - ME_CONFIG_MONGODB_ADMINPASSWORD=Hamid
@@ -53,6 +53,38 @@ services:
       - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
       - ME_CONFIG_BASICAUTH_USERNAME=admin
       - ME_CONFIG_BASICAUTH_PASSWORD=admin
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "22181:2181"
+    networks:
+      - microservices-net
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: ms_kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - microservices-net
 
   mail-dev:
     container_name: ms_mail_dev
@@ -66,6 +98,6 @@ networks:
     driver: bridge
 
 volumes:
-    postgres:
-    pgadmin:
-    mongo:
+  postgres:
+  pgadmin:
+  mongo:
